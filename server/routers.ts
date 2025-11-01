@@ -18,6 +18,41 @@ export const appRouter = router({
     }),
   }),
 
+  admin: router({
+    login: publicProcedure
+      .input(z.object({
+        username: z.string(),
+        password: z.string(),
+      }))
+      .mutation(({ input, ctx }) => {
+        const adminUsername = process.env.ADMIN_USERNAME || "admin";
+        const adminPassword = process.env.ADMIN_PASSWORD || "admin123";
+        
+        if (input.username === adminUsername && input.password === adminPassword) {
+          // Set admin session cookie
+          const cookieOptions = getSessionCookieOptions(ctx.req);
+          ctx.res.cookie("admin_session", "authenticated", {
+            ...cookieOptions,
+            maxAge: 24 * 60 * 60 * 1000, // 24 hours
+          });
+          return { success: true };
+        }
+        
+        throw new Error("Invalid username or password");
+      }),
+    
+    checkAuth: publicProcedure.query(({ ctx }) => {
+      const isAuthenticated = ctx.req.cookies?.admin_session === "authenticated";
+      return { isAuthenticated };
+    }),
+    
+    logout: publicProcedure.mutation(({ ctx }) => {
+      const cookieOptions = getSessionCookieOptions(ctx.req);
+      ctx.res.clearCookie("admin_session", { ...cookieOptions, maxAge: -1 });
+      return { success: true };
+    }),
+  }),
+
   items: router({
     list: publicProcedure.query(async () => {
       const { getAllItems } = await import("./db");

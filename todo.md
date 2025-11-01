@@ -60,3 +60,8 @@
 - [x] Update color scheme from orange to Adventist blue
 - [x] Update button colors to match adventist.org
 - [x] Add real-time stats section showing total contributions and balance remaining
+
+## Deployment Issues
+- [x] Replace OAuth with basic username/password authentication for admin
+- [x] Fix pledge creation requiring authentication (should be public)
+- [x] Add "Local Church Budget" item (R20,000) with Adventist logo

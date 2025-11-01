@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useAuth } from "@/_core/hooks/useAuth";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -14,13 +13,17 @@ import {
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Loader2, Search, Download, LogOut, ArrowLeft } from "lucide-react";
-import { getLoginUrl } from "@/const";
 import { Link } from "wouter";
 
 export default function Admin() {
-  const { user, loading: authLoading, logout } = useAuth();
+  const { data: authData, isLoading: authLoading } = trpc.admin.checkAuth.useQuery();
+  const logoutMutation = trpc.admin.logout.useMutation({
+    onSuccess: () => {
+      window.location.href = "/admin/login";
+    },
+  });
   const { data: pledges, isLoading } = trpc.pledges.list.useQuery(undefined, {
-    enabled: !!user && user.role === "admin",
+    enabled: authData?.isAuthenticated === true,
   });
   const { data: items } = trpc.items.list.useQuery();
   const [searchTerm, setSearchTerm] = useState("");
@@ -93,47 +96,14 @@ export default function Admin() {
     );
   }
 
-  if (!user) {
+  if (!authData?.isAuthenticated) {
+    // Redirect to login
+    if (!authLoading) {
+      window.location.href = "/admin/login";
+    }
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>Admin Access Required</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-gray-600">You must be logged in as an administrator to view this page.</p>
-            <Button asChild className="w-full">
-              <a href={getLoginUrl()}>Login</a>
-            </Button>
-            <Button asChild variant="outline" className="w-full">
-              <Link href="/">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Home
-              </Link>
-            </Button>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
-
-  if (user.role !== "admin") {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>Access Denied</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <p className="text-gray-600">You do not have permission to access the admin dashboard.</p>
-            <Button asChild className="w-full">
-              <Link href="/">
-                <ArrowLeft className="h-4 w-4 mr-2" />
-                Back to Home
-              </Link>
-            </Button>
-          </CardContent>
-        </Card>
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
   }
@@ -155,7 +125,7 @@ export default function Admin() {
                   Public View
                 </Link>
               </Button>
-              <Button variant="outline" size="sm" onClick={() => logout()}>
+              <Button variant="outline" size="sm" onClick={() => logoutMutation.mutate()}>
                 <LogOut className="h-4 w-4 mr-2" />
                 Logout
               </Button>
