@@ -50,6 +50,7 @@ export type InsertItem = typeof items.$inferInsert;
  */
 export const pledges = mysqlTable("pledges", {
   id: int("id").autoincrement().primaryKey(),
+  pledgeNumber: varchar("pledgeNumber", { length: 20 }).notNull().unique(),
   itemId: int("itemId").notNull(),
   fullName: varchar("fullName", { length: 255 }).notNull(),
   email: varchar("email", { length: 320 }).notNull(),

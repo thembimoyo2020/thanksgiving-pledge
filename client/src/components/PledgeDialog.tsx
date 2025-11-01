@@ -239,7 +239,7 @@ export default function PledgeDialog({ item, open, onOpenChange }: PledgeDialogP
               <Label htmlFor="popi" className="text-sm font-normal cursor-pointer leading-relaxed">
                 I consent to the collection and processing of my personal information in accordance
                 with the Protection of Personal Information Act (POPI Act) of South Africa. My
-                details will only be used for the purpose of this Thanksgiving pledge.
+                details will only be used for the purpose of processing this Thanksgiving pledge.
               </Label>
             </div>
           </div>

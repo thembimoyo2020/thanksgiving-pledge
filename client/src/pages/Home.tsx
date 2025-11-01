@@ -3,7 +3,7 @@ import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Heart, CheckCircle2 } from "lucide-react";
+import { Loader2, CheckCircle2 } from "lucide-react";
 import PledgeDialog from "@/components/PledgeDialog";
 import { APP_TITLE } from "@/const";
 
@@ -42,14 +42,14 @@ export default function Home() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100">
       {/* Header */}
       <header className="bg-white/80 backdrop-blur-sm border-b sticky top-0 z-10">
         <div className="container py-6">
           <div className="flex items-center gap-3">
-            <Heart className="h-8 w-8 text-orange-600 fill-orange-600" />
+            <img src="/adventist-logo.png" alt="Adventist Logo" className="h-12 w-12" />
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Thanksgiving Pledge</h1>
+              <h1 className="text-3xl font-bold text-gray-900">Tshwane East Adventist Church - Thanksgiving Day Pledges</h1>
               <p className="text-sm text-gray-600 italic">"What shall I render to the Lord?" - Psalm 116:12</p>
             </div>
           </div>
@@ -58,10 +58,41 @@ export default function Home() {
 
       {/* Main Content */}
       <main className="container py-12">
+        {/* Stats Section */}
+        <div className="max-w-4xl mx-auto mb-8">
+          <div className="grid gap-6 md:grid-cols-2">
+            <Card className="border-2 border-blue-200 bg-gradient-to-br from-blue-50 to-white">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg font-medium text-gray-700">Total Contributions So Far</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-4xl font-bold text-blue-600">
+                  {formatCurrency(items?.reduce((sum, item) => sum + item.totalPledged, 0) || 0)}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="border-2 border-slate-200 bg-gradient-to-br from-slate-50 to-white">
+              <CardHeader className="pb-3">
+                <CardTitle className="text-lg font-medium text-gray-700">Balance to Go</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-4xl font-bold text-slate-600">
+                  {formatCurrency(
+                    items?.reduce((sum, item) => {
+                      const totalPrice = item.price * item.quantity;
+                      const remaining = totalPrice - item.totalPledged;
+                      return sum + remaining;
+                    }, 0) || 0
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+
         <div className="max-w-4xl mx-auto mb-8 text-center">
-          <h2 className="text-2xl font-semibold text-gray-900 mb-3">
-            Choose an Item to Support
-          </h2>
+          <h2 className="text-2xl font-semibold text-gray-900 mb-2">Choose an Item to give towards as your Thanksgiving Offering</h2>
           <p className="text-gray-700">
             Select an item below to make your pledge. You can contribute the full amount or a partial amount towards any item.
           </p>
@@ -133,14 +164,14 @@ export default function Home() {
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Pledged:</span>
-                      <span className="font-semibold text-orange-600">
+                      <span className="font-semibold text-blue-600">
                         {formatCurrency(item.totalPledged)}
                       </span>
                     </div>
 
                     <div className="w-full bg-gray-200 rounded-full h-2.5">
                       <div
-                        className="bg-gradient-to-r from-orange-500 to-amber-500 h-2.5 rounded-full transition-all"
+                        className="bg-gradient-to-r from-blue-500 to-blue-600 h-2.5 rounded-full transition-all"
                         style={{ width: `${progress}%` }}
                       ></div>
                     </div>
@@ -154,7 +185,7 @@ export default function Home() {
                   </div>
 
                   {!isFullyPledged && (
-                    <Button className="w-full bg-orange-600 hover:bg-orange-700" size="lg">
+                    <Button className="w-full bg-[#456380] hover:bg-[#2563eb]" size="lg">
                       Make a Pledge
                     </Button>
                   )}

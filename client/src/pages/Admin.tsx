@@ -59,8 +59,9 @@ export default function Admin() {
   const exportToCSV = () => {
     if (!pledges || pledges.length === 0) return;
 
-    const headers = ["Date", "Full Name", "Email", "Cell Number", "Item", "Amount", "Type"];
+    const headers = ["Pledge Number", "Date", "Full Name", "Email", "Cell Number", "Item", "Amount", "Type"];
     const rows = pledges.map((p) => [
+      p.pledgeNumber,
       formatDate(p.createdAt),
       p.fullName,
       p.email,
@@ -180,7 +181,7 @@ export default function Admin() {
               <CardTitle className="text-sm font-medium text-gray-600">Total Amount</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold text-orange-600">{formatCurrency(totalPledged)}</div>
+              <div className="text-3xl font-bold text-blue-600">{formatCurrency(totalPledged)}</div>
             </CardContent>
           </Card>
 
@@ -227,6 +228,7 @@ export default function Admin() {
                 <Table>
                   <TableHeader>
                     <TableRow>
+                      <TableHead>Pledge #</TableHead>
                       <TableHead>Date</TableHead>
                       <TableHead>Full Name</TableHead>
                       <TableHead>Email</TableHead>
@@ -239,12 +241,13 @@ export default function Admin() {
                   <TableBody>
                     {filteredPledges.map((pledge) => (
                       <TableRow key={pledge.id}>
+                        <TableCell className="font-mono font-semibold text-blue-600">{pledge.pledgeNumber}</TableCell>
                         <TableCell className="text-sm">{formatDate(pledge.createdAt)}</TableCell>
                         <TableCell className="font-medium">{pledge.fullName}</TableCell>
                         <TableCell className="text-sm">{pledge.email}</TableCell>
                         <TableCell className="text-sm">{pledge.cellNumber}</TableCell>
                         <TableCell className="text-sm">{getItemName(pledge.itemId)}</TableCell>
-                        <TableCell className="font-semibold text-orange-600">
+                        <TableCell className="font-semibold text-blue-600">
                           {formatCurrency(pledge.amount)}
                         </TableCell>
                         <TableCell>

@@ -33,6 +33,7 @@ interface PledgeEmailData {
   amount: number; // in Rands
   isFull: boolean;
   itemTotalPrice: number; // in Rands
+  pledgeNumber: string;
 }
 
 export async function sendPledgeConfirmationEmail(data: PledgeEmailData): Promise<boolean> {
@@ -61,7 +62,7 @@ export async function sendPledgeConfirmationEmail(data: PledgeEmailData): Promis
       padding: 20px;
     }
     .header {
-      background: linear-gradient(135deg, #ea580c 0%, #f59e0b 100%);
+      background: linear-gradient(135deg, #456380 0%, #2563eb 100%);
       color: white;
       padding: 30px 20px;
       text-align: center;
@@ -79,7 +80,7 @@ export async function sendPledgeConfirmationEmail(data: PledgeEmailData): Promis
     }
     .pledge-details {
       background: #fef3c7;
-      border-left: 4px solid #f59e0b;
+      border-left: 4px solid #456380;
       padding: 20px;
       margin: 20px 0;
       border-radius: 4px;
@@ -121,7 +122,7 @@ export async function sendPledgeConfirmationEmail(data: PledgeEmailData): Promis
       font-size: 14px;
     }
     .thank-you {
-      color: #ea580c;
+      color: #456380;
       font-size: 20px;
       font-weight: bold;
       margin: 20px 0;
@@ -137,7 +138,7 @@ export async function sendPledgeConfirmationEmail(data: PledgeEmailData): Promis
   <div class="content">
     <p>Dear ${data.fullName},</p>
     
-    <p>Thank you for your generous pledge towards our Thanksgiving initiative. Your contribution makes a real difference in our community.</p>
+    <p>Thank you for your generous pledge for Thanksgiving to the Lord. Your offering makes a real difference in the Mission.</p>
     
     <div class="pledge-details">
       <h2>Your Pledge Details</h2>
@@ -154,8 +155,36 @@ export async function sendPledgeConfirmationEmail(data: PledgeEmailData): Promis
         <span class="detail-value">${data.isFull ? "Full Amount" : "Partial Amount"}</span>
       </div>
       <div class="detail-row">
+        <span class="detail-label">Pledge Reference:</span>
+        <span class="detail-value">${data.pledgeNumber}</span>
+      </div>
+      <div class="detail-row">
         <span class="detail-label">Your Pledge Amount:</span>
         <span class="detail-value">R${data.amount.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</span>
+      </div>
+    </div>
+    
+    <div class="pledge-details">
+      <h2>Bank Transfer Details</h2>
+      <div class="detail-row">
+        <span class="detail-label">Account Name:</span>
+        <span class="detail-value">Tshwane East SDA Church</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Bank:</span>
+        <span class="detail-value">ABSA Bank (Cheque Account)</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Account Number:</span>
+        <span class="detail-value">4067428596</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Branch:</span>
+        <span class="detail-value">Menlyn Park (632005)</span>
+      </div>
+      <div class="detail-row">
+        <span class="detail-label">Reference:</span>
+        <span class="detail-value">${data.pledgeNumber}</span>
       </div>
     </div>
     
@@ -166,12 +195,12 @@ export async function sendPledgeConfirmationEmail(data: PledgeEmailData): Promis
     <p>If you have any questions or concerns, please don't hesitate to reach out to us.</p>
     
     <p>With gratitude,<br>
-    <strong>The Thanksgiving Pledge Team</strong></p>
+    <strong>TESDA Church</strong></p>
   </div>
   
   <div class="footer">
     <p>This email was sent in accordance with the Protection of Personal Information Act (POPI Act) of South Africa.</p>
-    <p>Your details will only be used for the purpose of this Thanksgiving pledge.</p>
+    <p>Your details will only be used for the purpose of processing this Thanksgiving pledge.</p>
   </div>
 </body>
 </html>
@@ -180,13 +209,21 @@ export async function sendPledgeConfirmationEmail(data: PledgeEmailData): Promis
     const textContent = `
 Dear ${data.fullName},
 
-Thank you for your generous pledge towards our Thanksgiving initiative!
+Thank you for your generous pledge for Thanksgiving to the Lord!
 
 YOUR PLEDGE DETAILS:
 Item: ${data.itemName}
 Item Total Cost: R${data.itemTotalPrice.toFixed(2)}
 Pledge Type: ${data.isFull ? "Full Amount" : "Partial Amount"}
+Pledge Reference: ${data.pledgeNumber}
 Your Pledge Amount: R${data.amount.toFixed(2)}
+
+BANK TRANSFER DETAILS:
+Account Name: Tshwane East SDA Church
+Bank: ABSA Bank (Cheque Account)
+Account Number: 4067428596
+Branch: Menlyn Park (632005)
+Reference: ${data.pledgeNumber}
 
 Your generosity is deeply appreciated!
 
@@ -195,11 +232,11 @@ This confirmation serves as a record of your pledge. We will be in touch with fu
 If you have any questions or concerns, please don't hesitate to reach out to us.
 
 With gratitude,
-The Thanksgiving Pledge Team
+TESDA Church
 
 ---
 This email was sent in accordance with the Protection of Personal Information Act (POPI Act) of South Africa.
-Your details will only be used for the purpose of this Thanksgiving pledge.
+Your details will only be used for the purpose of processing this Thanksgiving pledge.
     `;
 
     await transport.sendMail({

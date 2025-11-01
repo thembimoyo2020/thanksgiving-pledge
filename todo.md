@@ -45,3 +45,18 @@
 - [x] Replace all item images with clearer versions provided by user
 
 - [x] Use full uncropped picture for refrigerator
+
+## Church Customizations (Node.js only)
+- [x] Change title to "Tshwane East Adventist Church - Thanksgiving Day Pledges"
+- [x] Update "Choose an Item to Support" text
+- [x] Update email thank you message
+- [x] Change email signature to "TESDA Church"
+- [x] Add auto-numbering for pledges (Pledge#001)
+- [x] Include TESDA bank account details in email
+- [x] Update POPI consent text
+
+## Adventist Branding
+- [x] Replace heart icon with Adventist logo
+- [x] Update color scheme from orange to Adventist blue
+- [x] Update button colors to match adventist.org
+- [x] Add real-time stats section showing total contributions and balance remaining

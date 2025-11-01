@@ -134,11 +134,20 @@ export async function getPledgesByItemId(itemId: number) {
   return await db.select().from(pledges).where(eq(pledges.itemId, itemId));
 }
 
-export async function insertPledge(pledge: InsertPledge) {
+export async function insertPledge(pledge: Omit<InsertPledge, 'pledgeNumber'>) {
   const db = await getDb();
   if (!db) throw new Error("Database not available");
-  const result = await db.insert(pledges).values(pledge);
-  return result;
+  
+  // Generate pledge number
+  const allPledges = await db.select().from(pledges);
+  const nextNumber = allPledges.length + 1;
+  const pledgeNumber = `Pledge#${String(nextNumber).padStart(3, '0')}`;
+  
+  const result = await db.insert(pledges).values({
+    ...pledge,
+    pledgeNumber,
+  });
+  return { result, pledgeNumber };
 }
 
 export async function updatePledgeEmailStatus(pledgeId: number, sent: boolean) {

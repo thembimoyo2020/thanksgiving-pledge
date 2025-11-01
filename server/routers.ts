@@ -74,7 +74,7 @@ export const appRouter = router({
         }
         
         // Insert pledge
-        await insertPledge({
+        const { pledgeNumber } = await insertPledge({
           itemId: input.itemId,
           fullName: input.fullName,
           email: input.email,
@@ -98,6 +98,7 @@ export const appRouter = router({
           amount: input.amount,
           isFull: input.isFull,
           itemTotalPrice: totalItemPrice / 100,
+          pledgeNumber,
         });
         
         // Update email status (we'll need the pledge ID, so let's get it)
@@ -109,6 +110,7 @@ export const appRouter = router({
           itemName: item.name,
           amount: amountInCents / 100,
           emailSent,
+          pledgeNumber,
         };
       }),
     
