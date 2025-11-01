@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1761956963006,
+      "tag": "0000_wealthy_shen",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1761957003834,
+      "tag": "0001_perfect_bloodscream",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1761958449519,
+      "tag": "0002_yellow_zaladane",
+      "breakpoints": true
+    }
+  ]
+}
