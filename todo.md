@@ -65,3 +65,5 @@
 - [x] Replace OAuth with basic username/password authentication for admin
 - [x] Fix pledge creation requiring authentication (should be public)
 - [x] Add "Local Church Budget" item (R20,000) with Adventist logo
+- [ ] Add missing emailSent column to production database
+- [x] Fix admin login redirect loop on custom domain
